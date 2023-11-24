@@ -5,7 +5,7 @@ shell:
     # login
     - -l
     - -c
-    - '$HOME/.local/share/zinit/polaris/bin/zellij --config $HOME/.local/share/zinit/snippets/zellij.kdl/zellij.kdl attach --index 0 --create'
+    - '$HOME/.local/share/zinit/polaris/bin/zellij attach --index 0 --create'
 
 # env 中的任何条目都将作为环境变量添加。
 env:
