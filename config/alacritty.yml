@@ -1,0 +1,135 @@
+# 指定 Alacritty 启动时使用 zellij
+shell:
+  program: /bin/zsh
+  args:
+    # login
+    - -l
+    - -c
+    - '$HOME/.local/share/zinit/polaris/bin/zellij --config $HOME/.local/share/zinit/snippets/zellij.kdl/zellij.kdl attach --index 0 --create'
+
+# env 中的任何条目都将作为环境变量添加。
+env:
+  # TERM 变量
+  # 此值用于为每个 Alacritty 实例设置 `$TERM` 环境变量。
+  # 如果未指定，则 alacritty 将检查本地的 terminfo 数据库，并使用 `alacritty`（如果可用），
+  # 否则将使用 `xterm-256color`。
+  # 不指定 TERM 会导致一些旧机器通过 SSH 连接时无法正常工作
+  TERM: xterm-256color
+
+schemes:
+  minimal-mistakes: &minimal-mistakes # Minimal-Mistakes colors
+    transparent_background_colors: true
+
+    primary:
+      background: "0x283036"
+      foreground: "0xe5e9f0"
+
+    # Colors the cursor will use if `custom_cursor_colors` is true
+    cursor:
+      text: "0x283036"
+      cursor: "0xe5e9f0"
+
+    # Normal colors
+    normal:
+      black: "0x283036"
+      red: "0xff5959"
+      green: "0x59ff59"
+      yellow: "0xffff59"
+      blue: "0x9059ff"
+      magenta: "0xff59f9"
+      cyan: "0x59fff9"
+      white: "0xe5e9f0"
+
+    # Bright colors
+    bright:
+      black: "0x434c5e"
+      red: "0xffa6a6"
+      green: "0xa6ffa6"
+      yellow: "0xffffa6"
+      blue: "0xc5a6ff"
+      magenta: "0xffa6fc"
+      cyan: "0xa6fffc"
+      white: "0xe5e9f0"
+
+colors: *minimal-mistakes
+
+# 设置字体
+# 字体下载: https://www.nerdfonts.com/font-downloads
+# 图标符号搜索: https://www.nerdfonts.com/cheat-sheet
+# 推荐备选字体: JetBrains Mono Regular Nerd Font Complete Mono
+font:
+  normal:
+    family: 'JetBrainsMono Nerd Font'
+    style: Regular
+  bold:
+    family: 'JetBrainsMono Nerd Font'
+    style: Regular
+  italic:
+    family: 'JetBrainsMono Nerd Font'
+    style: Italic
+  bold_italic:
+    family: 'JetBrainsMono Nerd Font'
+    style: Italic
+
+  # 字体大小
+  size: 16.0
+
+  offset:
+    x: 0
+    y: 4
+  glyph_offset:
+    x: 0
+    y: 2
+
+window:
+  # 窗口透明度 (0 全透明, 1 不透明)
+  opacity: 1
+  # 尺寸
+  dimensions:
+    columns: 105
+    lines: 31
+  padding:
+    x: 5
+    y: 0
+  # 窗口装饰
+  #
+  # decorations 的值:
+  #     - full: 边框和标题栏
+  #     - none: 无边框和标题栏
+  #
+  # decorations 的值 (仅限 macOS):
+  #     - transparent: 标题栏，透明背景和标题栏按钮
+  #     - buttonless: 标题栏，透明背景，但没有标题栏按钮
+  decorations: buttonless
+  # 启动模式 (更改需要重启)
+  #
+  # startup_mode 的值:
+  #   - Windowed
+  #   - Maximized
+  #   - Fullscreen
+  #
+  # startup_mode 的值 (仅限 macOS):
+  #   - SimpleFullscreen
+  startup_mode: Windowed
+  dynamic_title: false
+  title: Alacritty
+
+scrolling:
+  # 回滚缓冲区中的最大行数,指定“0”将禁用滚动。
+  history: 10000
+  # 滚动行数
+  multiplier: 4
+
+cursor:
+  style:
+    shape: Block
+
+selection:
+  semantic_escape_chars: ',│`|:"'' ()[]{}<>'
+  save_to_clipboard: true
+
+live_config_reload: true
+
+# 全屏显示窗口, 绑定快捷键 Ctrl-x
+key_bindings:
+  - { key: X, mods: Control, action: ToggleSimpleFullscreen }
