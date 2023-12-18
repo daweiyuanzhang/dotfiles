@@ -16,42 +16,33 @@ env:
   # 不指定 TERM 会导致一些旧机器通过 SSH 连接时无法正常工作
   TERM: xterm-256color
 
-schemes:
-  minimal-mistakes: &minimal-mistakes # Minimal-Mistakes colors
-    transparent_background_colors: true
+colors:
+  # Default colors
+  primary:
+    background: '0x1a1b26'
+    foreground: '0xa9b1d6'
 
-    primary:
-      background: "0x283036"
-      foreground: "0xe5e9f0"
+  # Normal colors
+  normal:
+    black:   '0x32344a'
+    red:     '0xf7768e'
+    green:   '0x9ece6a'
+    yellow:  '0xe0af68'
+    blue:    '0x7aa2f7'
+    magenta: '0xad8ee6'
+    cyan:    '0x449dab'
+    white:   '0x787c99'
 
-    # Colors the cursor will use if `custom_cursor_colors` is true
-    cursor:
-      text: "0x283036"
-      cursor: "0xe5e9f0"
-
-    # Normal colors
-    normal:
-      black: "0x283036"
-      red: "0xff5959"
-      green: "0x59ff59"
-      yellow: "0xffff59"
-      blue: "0x9059ff"
-      magenta: "0xff59f9"
-      cyan: "0x59fff9"
-      white: "0xe5e9f0"
-
-    # Bright colors
-    bright:
-      black: "0x434c5e"
-      red: "0xffa6a6"
-      green: "0xa6ffa6"
-      yellow: "0xffffa6"
-      blue: "0xc5a6ff"
-      magenta: "0xffa6fc"
-      cyan: "0xa6fffc"
-      white: "0xe5e9f0"
-
-colors: *minimal-mistakes
+  # Bright colors
+  bright:
+    black:   '0x444b6a'
+    red:     '0xff7a93'
+    green:   '0xb9f27c'
+    yellow:  '0xff9e64'
+    blue:    '0x7da6ff'
+    magenta: '0xbb9af7'
+    cyan:    '0x0db9d7'
+    white:   '0xacb0d0'
 
 # 设置字体
 # 字体下载: https://www.nerdfonts.com/font-downloads
