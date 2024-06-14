@@ -1,0 +1,90 @@
+live_config_reload = true
+
+[colors.bright]
+black = "0x444b6a"
+blue = "0x7da6ff"
+cyan = "0x0db9d7"
+green = "0xb9f27c"
+magenta = "0xbb9af7"
+red = "0xff7a93"
+white = "0xacb0d0"
+yellow = "0xff9e64"
+
+[colors.normal]
+black = "0x32344a"
+blue = "0x7aa2f7"
+cyan = "0x449dab"
+green = "0x9ece6a"
+magenta = "0xad8ee6"
+red = "0xf7768e"
+white = "0x787c99"
+yellow = "0xe0af68"
+
+[colors.primary]
+background = "0x1a1b26"
+foreground = "0xa9b1d6"
+
+[cursor.style]
+shape = "Block"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 16.0
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+
+[font.glyph_offset]
+x = 0
+y = 2
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.offset]
+x = 0
+y = 4
+
+[[keyboard.bindings]]
+action = "ToggleSimpleFullscreen"
+key = "X"
+mods = "Control"
+
+[scrolling]
+history = 10000
+multiplier = 4
+
+[selection]
+save_to_clipboard = true
+semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+
+[shell]
+args = ["-l", "-c", "$HOME/.local/share/zinit/polaris/bin/zellij attach --index 0 --create"]
+program = "/bin/zsh"
+
+[window]
+decorations = "buttonless"
+dynamic_title = false
+opacity = 1
+startup_mode = "Windowed"
+title = "Alacritty"
+
+[window.dimensions]
+columns = 105
+lines = 31
+
+[window.padding]
+x = 5
+y = 0
