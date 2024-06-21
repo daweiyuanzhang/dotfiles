@@ -11,6 +11,7 @@ $git_branch\
 $git_status\
 $git_state\
 $git_metrics\
+$java\
 $python\
 $cmd_duration\
 $line_break\
@@ -176,6 +177,13 @@ format = '[ ${symbol}${pyenv_prefix}(${version})( \($virtualenv\)) ]($style)'
 symbol = " "   # \ue606
 version_format = "${raw}"
 style = "bg:python fg:text_light"
+
+[java]
+disabled=false
+format = 'via [${symbol}(${version} )]($style)'
+symbol = "  "
+version_format = "${raw}"
+style = 'red dimmed'
 
 [fill]
 symbol = " "
