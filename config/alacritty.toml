@@ -71,8 +71,7 @@ save_to_clipboard = true
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
 [shell]
-# args = ["-l", "-c", "$HOME/.local/share/zinit/polaris/bin/zellij attach --index 0 --create"]
-args = ["-l", "-c", "/opt/homebrew/bin/zellij attach --index 0 --create"]
+args = ["-l", "-c", "$(brew --prefix)/bin/zellij --config ~/.local/share/zap/plugins/dotfiles/config/zellij.kdl  attach --index 0 --create"]
 program = "/bin/zsh"
 
 [window]
