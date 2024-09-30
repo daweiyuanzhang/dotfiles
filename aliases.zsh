@@ -61,5 +61,3 @@ alias x='echo "Goodbye! 👋" ; sleep 0.2; exit'
 # command -v htop &> /dev/null && alias htop-user='htop -u "$USER"'
 
 alias reloadzsh='source ~/.zshrc'
-
-command -v zellij &> /dev/null && alias ze="zellij"
