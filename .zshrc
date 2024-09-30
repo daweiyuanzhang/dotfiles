@@ -16,6 +16,7 @@ HISTSIZE=500000
 SAVEHIST=500000
 HIST_STAMPS="yyyy-mm-dd"
 
+
 export STARSHIP_CONFIG="$HOME/.starship.toml"
 
 plug "wintermi/zsh-brew"
@@ -25,7 +26,6 @@ plug "MichaelAquilina/zsh-you-should-use"
 plug "zap-zsh/fzf"
 plug "Aloxaf/fzf-tab"
 plug "zap-zsh/sudo"
-# plug "SukkaW/zsh-proxy"
 plug "mattberther/zsh-pyenv"
 
 # personal
@@ -34,3 +34,12 @@ plug "$ZAP_PLUGIN_DIR/dotfiles/*"
 
 autoload -Uz compinit
 compinit
+
+
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  exec tmux
+fi
+
+
+
+
