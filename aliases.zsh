@@ -14,12 +14,12 @@ alias ~='cd ~'
 
 # Easy report
 command -v lsd &> /dev/null && alias ls="lsd"
-alias l="ls"
-alias la="ls -lA"
-alias ll="ls -l"
-alias lla="ls -lA"
-lt() { lsd --tree --depth $1 2>/dev/null || lsd --tree --depth 1 }
-lta() { lsd --tree --depth $1 -A 2>/dev/null || lsd --tree --depth 1 -A }
+# alias l="ls"
+# alias la="ls -lA"
+# alias ll="ls -l"
+# alias lla="ls -lA"
+# lt() { lsd --tree --depth $1 2>/dev/null || lsd --tree --depth 1 }
+# lta() { lsd --tree --depth $1 -A 2>/dev/null || lsd --tree --depth 1 -A }
 alias dud='du -d 1 -h'
 alias duf='du -sh *'
 alias fdir='find . -type d -name'
