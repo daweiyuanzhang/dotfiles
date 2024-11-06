@@ -1,4 +1,4 @@
-ln -sfn $ZAP_PLUGIN_DIR/dotfiles/config/alacritty.toml $HOME/.alacritty.toml; \
-ln -sfn $ZAP_PLUGIN_DIR/dotfiles/config/zellij.kdl     $HOME/.zellij.kdl; \
-ln -sfn $ZAP_PLUGIN_DIR/dotfiles/config/tmux.conf     $HOME/.tmux.conf; \
-ln -sfn $ZAP_PLUGIN_DIR/dotfiles/config/starship.toml  $HOME/.starship.toml; 
+ln -sfn ${0:A:h}/config/alacritty.toml $HOME/.alacritty.toml; \
+ln -sfn ${0:A:h}/config/zellij.kdl     $HOME/.zellij.kdl;     \
+ln -sfn ${0:A:h}/config/tmux.conf      $HOME/.tmux.conf;      \
+ln -sfn ${0:A:h}/config/starship.toml  $HOME/.starship.toml; 
