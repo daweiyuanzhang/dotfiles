@@ -1,1 +1,1 @@
-source {aliases,exports,functions,linker}.zsh
+source ${0:A:h}/{aliases,exports,functions,linker}.zsh
