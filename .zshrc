@@ -8,7 +8,7 @@ if [[ ! -f $HOME/.local/share/zap/zap.zsh ]]; then
         print -P "%F{160} The clone has failed.%f%b"
 fi
 source "$HOME/.local/share/zap/zap.zsh"
-### End of Zap's installer chunk
+# End of Zap's installer chunk
 
 # history
 HISTFILE="$HOME/.zsh_history"
@@ -20,26 +20,20 @@ HIST_STAMPS="yyyy-mm-dd"
 export STARSHIP_CONFIG="$HOME/.starship.toml"
 
 plug "wintermi/zsh-brew"
+# plug "mattberther/zsh-pyenv"
+plug "AndydeCleyre/zpy"
 plug "wintermi/zsh-starship"
 plug "zsh-users/zsh-autosuggestions"
 plug "MichaelAquilina/zsh-you-should-use"
 plug "zap-zsh/fzf"
 plug "Aloxaf/fzf-tab"
 plug "zap-zsh/sudo"
-plug "mattberther/zsh-pyenv"
+plug "zap-zsh/completions"
+plug "zpm-zsh/ls"
+plug "kjhaber/tm.zsh"
+
+# autoload -Uz compinit
+# compinit
 
 # personal
 plug "daweiyuanzhang/dotfiles"
-plug "$ZAP_PLUGIN_DIR/dotfiles/*"
-
-autoload -Uz compinit
-compinit
-
-
-#if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-#  exec tmux
-#fi
-
-
-
-
