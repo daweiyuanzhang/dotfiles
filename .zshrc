@@ -48,8 +48,4 @@ plug "hlissner/zsh-autopair"
 plug "daweiyuanzhang/dotfiles"
 
 # local
-plug "$HOME/.config/local_function.zsh"
-
-
-
-
+[[ -e "$HOME/.config/local_function.zsh" ]] && plug "$HOME/.config/local_function.zsh"
