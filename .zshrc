@@ -25,11 +25,8 @@ HIST_STAMPS="yyyy-mm-dd"
 export STARSHIP_CONFIG="$HOME/.starship.toml"
 
 # plugins
-# plug "wintermi/zsh-brew"
-plug "zimfw/homebrew"
-# plug "mattberther/zsh-pyenv"
+plug "wintermi/zsh-brew"
 plug "davidparsson/zsh-pyenv-lazy"
-# plug "AndydeCleyre/zpy"
 plug "MichaelAquilina/zsh-autoswitch-virtualenv"
 plug "wintermi/zsh-starship"
 plug "zsh-users/zsh-autosuggestions"
