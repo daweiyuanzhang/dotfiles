@@ -10,6 +10,11 @@ fi
 source "$HOME/.local/share/zap/zap.zsh"
 # End of Zap's installer chunk
 
+# Enabling the Zsh Completion System
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
+
+
 # history
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=500000
@@ -19,21 +24,32 @@ HIST_STAMPS="yyyy-mm-dd"
 
 export STARSHIP_CONFIG="$HOME/.starship.toml"
 
-plug "wintermi/zsh-brew"
+# plugins
+# plug "wintermi/zsh-brew"
+plug "zimfw/homebrew"
 # plug "mattberther/zsh-pyenv"
-plug "AndydeCleyre/zpy"
+plug "davidparsson/zsh-pyenv-lazy"
+# plug "AndydeCleyre/zpy"
+plug "MichaelAquilina/zsh-autoswitch-virtualenv"
 plug "wintermi/zsh-starship"
 plug "zsh-users/zsh-autosuggestions"
+plug "zsh-users/zsh-syntax-highlighting"
+plug "zsh-users/zsh-completions"
 plug "MichaelAquilina/zsh-you-should-use"
-plug "zap-zsh/fzf"
 plug "Aloxaf/fzf-tab"
+plug "zap-zsh/fzf"
+plug "Freed-Wu/fzf-tab-source"
 plug "zap-zsh/sudo"
-plug "zap-zsh/completions"
-plug "zpm-zsh/ls"
+plug "zap-zsh/exa"
 plug "kjhaber/tm.zsh"
-
-# autoload -Uz compinit
-# compinit
+plug "hlissner/zsh-autopair"
 
 # personal
 plug "daweiyuanzhang/dotfiles"
+
+# local
+plug "$HOME/.config/local_function.zsh"
+
+
+
+
