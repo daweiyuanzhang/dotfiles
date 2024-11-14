@@ -13,7 +13,7 @@ alias ~='cd ~'
 # alias 5='cd -5'
 
 # Easy report
-command -v lsd &> /dev/null && alias ls="lsd"
+# command -v lsd &> /dev/null && alias ls="lsd"
 # alias l="ls"
 # alias la="ls -lA"
 # alias ll="ls -l"
