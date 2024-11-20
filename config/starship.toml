@@ -158,7 +158,7 @@ format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 [python]
 symbol = ""
 style = "bg:color_blue"
-format = '[[ ${symbol}${pyenv_prefix}(${version})( \($virtualenv\)) ](fg:color_fg0 bg:color_blue)]($style)'
+format = '[[ ${symbol}${pyenv_prefix}( ${version})( \($virtualenv\)) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [docker_context]
 symbol = ""
