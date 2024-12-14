@@ -1,4 +1,4 @@
-live_config_reload = true
+general.live_config_reload = true
 
 [colors.bright]
 black = "0x444b6a"
