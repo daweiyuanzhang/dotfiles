@@ -37,7 +37,7 @@ plug "Aloxaf/fzf-tab"
 plug "zap-zsh/fzf"
 plug "Freed-Wu/fzf-tab-source"
 plug "zap-zsh/sudo"
-plug "zap-zsh/exa"
+plug "zimfw/exa"
 plug "kjhaber/tm.zsh"
 plug "hlissner/zsh-autopair"
 
