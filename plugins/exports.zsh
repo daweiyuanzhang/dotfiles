@@ -16,5 +16,3 @@ fi
 
 # bat theme
 export BAT_THEME="gruvbox-dark"
-
-export PATH="$HOME/.local/bin:$PATH"
