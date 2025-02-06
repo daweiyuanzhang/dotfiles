@@ -6,6 +6,7 @@ alias uvl='uv lock'               # [L]ock: create a lock file for the project's
 alias uvpyl='uv python list'      # [P]ython [L]ist: list all Python Versions (legacy)
 alias uvpyi='uv python install'   # [P]ython [I]nstall: manually install a Python Version (legacy)
 alias uvpyu='uv python uninstall' # [P]ython [U]ninstall: manually install a Python Version (legacy)
+alias uvpl='uv pip list'          # [P]ip [L]ist: list all dependencies in the project (legacy)
 alias uvpi='uv pip install'       # [P]ip [I]nstall: manually install a dependency in the project (legacy)
 alias uvpu='uv pip uninstall'     # [P]ip [U]ninstall: manually uninstall a dependency from the project (legacy)
 alias uvpy='uv run python'        # [P]ython: run Python in the project's environment
