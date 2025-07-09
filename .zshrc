@@ -27,7 +27,7 @@ export STARSHIP_CONFIG="$HOME/.starship.toml"
 # plugins
 plug "wintermi/zsh-brew"
 plug "AndydeCleyre/zpy"
-plug "Skylor-Tang/auto-venv"
+plug "matthiasha/zsh-uv-env"
 plug "wintermi/zsh-starship"
 plug "zsh-users/zsh-autosuggestions"
 plug "zsh-users/zsh-syntax-highlighting"
