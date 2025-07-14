@@ -135,7 +135,7 @@ typeset -gA JOVIAL_PALETTE=(
 )
 
 # parts dispaly order from left to right of jovial theme at the first line 
-typeset -ga JOVIAL_PROMPT_ORDER=( host user path dev-env git-info )
+typeset -ga JOVIAL_PROMPT_ORDER=( host user path dev-env venv git-info )
 
 # prompt parts priority from high to low, for `responsive design`.
 # decide whether to still keep dispaly while terminal width is no enough;
@@ -192,7 +192,102 @@ typeset -gA JOVIAL_AFFIXES=(
     current-time.suffix    ' '
 )
 
+# ============================================================================
+# GITSTATUS INTEGRATION FROM SCRIPT A
+# ============================================================================
 
+# Check if gitstatus is available and initialize it
+typeset -g jovial_gitstatus_available=false
+typeset -g GITSTATUS_PROMPT=''
+typeset -gi GITSTATUS_PROMPT_LEN=0
+
+@jov.init-gitstatus() {
+    if typeset -f gitstatus_query > /dev/null; then
+        jovial_gitstatus_available=true
+        # Start gitstatusd instance with name "JOVIAL"
+        gitstatus_stop 'JOVIAL' && gitstatus_start -s -1 -u -1 -c -1 -d -1 'JOVIAL'
+        return 0
+    else
+        jovial_gitstatus_available=false
+        return 1
+    fi
+}
+
+@jov.gitstatus-prompt-update() {
+    emulate -L zsh
+    GITSTATUS_PROMPT=''
+    GITSTATUS_PROMPT_LEN=0
+
+    if [[ ${jovial_gitstatus_available} != true ]]; then
+        return 1
+    fi
+
+    # Call gitstatus_query synchronously.
+    gitstatus_query 'JOVIAL'                  || return 1  # error
+    [[ $VCS_STATUS_RESULT == 'ok-sync' ]] || return 0  # not a git repo
+
+    local      clean='%5F'  # magenta foreground
+    local   modified='%3F'  # yellow foreground
+    local  untracked='%4F'  # blue foreground
+    local conflicted='%1F'  # red foreground
+
+    [[ "$TERM" != "linux" ]] && local git_icon=" " # set git_icon if not in tty
+    local p="%B${clean}${git_icon}"
+
+    local where  # branch name, tag or commit
+    if [[ -n $VCS_STATUS_LOCAL_BRANCH ]]; then
+        where=$VCS_STATUS_LOCAL_BRANCH
+    elif [[ -n $VCS_STATUS_TAG ]]; then
+        p+='#'
+        where=$VCS_STATUS_TAG
+    else
+        p+='@'
+        where=${VCS_STATUS_COMMIT[1,8]}
+    fi
+
+    (( $#where > 32 )) && where[13,-13]="…"  # truncate long branch names and tags
+    p+="${where//\%/%%}%b"                   # escape %
+
+    # ⇣42 if behind the remote.
+    (( VCS_STATUS_COMMITS_BEHIND )) && p+=" ${clean}⇣${VCS_STATUS_COMMITS_BEHIND}"
+    # ⇡42 if ahead of the remote; no leading space if also behind the remote: ⇣42⇡42.
+    (( VCS_STATUS_COMMITS_AHEAD && !VCS_STATUS_COMMITS_BEHIND )) && p+=" "
+    (( VCS_STATUS_COMMITS_AHEAD  )) && p+="${clean}⇡${VCS_STATUS_COMMITS_AHEAD}"
+    # ⇠42 if behind the push remote.
+    (( VCS_STATUS_PUSH_COMMITS_BEHIND )) && p+=" ${clean}⇠${VCS_STATUS_PUSH_COMMITS_BEHIND}"
+    (( VCS_STATUS_PUSH_COMMITS_AHEAD && !VCS_STATUS_PUSH_COMMITS_BEHIND )) && p+=" "
+    # ⇢42 if ahead of the push remote; no leading space if also behind: ⇠42⇢42.
+    (( VCS_STATUS_PUSH_COMMITS_AHEAD  )) && p+="${clean}⇢${VCS_STATUS_PUSH_COMMITS_AHEAD}"
+    # *42 if have stashes.
+    (( VCS_STATUS_STASHES        )) && p+=" ${clean}*${VCS_STATUS_STASHES}"
+    # 'merge' if the repo is in an unusual state.
+    [[ -n $VCS_STATUS_ACTION     ]] && p+=" ${conflicted}${VCS_STATUS_ACTION}"
+    # ~42 if have merge conflicts.
+    (( VCS_STATUS_NUM_CONFLICTED )) && p+=" ${conflicted}~${VCS_STATUS_NUM_CONFLICTED}"
+    # +42 if have staged changes.
+    (( VCS_STATUS_NUM_STAGED     )) && p+=" ${modified}+${VCS_STATUS_NUM_STAGED}"
+    # !42 if have unstaged changes.
+    (( VCS_STATUS_NUM_UNSTAGED   )) && p+=" ${modified}!${VCS_STATUS_NUM_UNSTAGED}"
+    # ?42 if have untracked files. It's really a question mark, your font isn't broken.
+    (( VCS_STATUS_NUM_UNTRACKED  )) && p+=" ${untracked}?${VCS_STATUS_NUM_UNTRACKED}"
+
+    GITSTATUS_PROMPT="${p}%f"
+
+    # The length of GITSTATUS_PROMPT after removing %f, %b, %F and %B.
+    GITSTATUS_PROMPT_LEN="${(m)#${${${GITSTATUS_PROMPT//\%\%/x}//\%(f|<->F)}//\%[Bb]}}"
+
+    # Determine if git is dirty based on gitstatus
+    local is_dirty=false
+    if (( VCS_STATUS_NUM_CONFLICTED || VCS_STATUS_NUM_STAGED || VCS_STATUS_NUM_UNSTAGED || VCS_STATUS_NUM_UNTRACKED )); then
+        is_dirty=true
+    fi
+
+    jovial_is_git_dirty="${is_dirty}"
+}
+
+# ============================================================================
+# END GITSTATUS INTEGRATION
+# ============================================================================
 
 @jov.iscommand() { [[ -e ${commands[$1]} ]] }
 
@@ -247,6 +342,13 @@ typeset -gA JOVIAL_AFFIXES=(
 
     local root_regex='^(/)[^/]*$'
     local dirname_regex='^((/[^/]+)+)/[^/]+/?$'
+
+    if [[ -e ${current_path}/${target} ]]; then
+        if ${whether_output}; then
+            echo "${current_path}";
+        fi
+        return 0
+    fi
 
     # [hacking] it's same as  parent_path=`\dirname ${current_path}`,
     # but better performance due to reduce subprocess call
@@ -490,11 +592,11 @@ typeset -gA jovial_affix_lengths=()
         # `${...:t}` means basename of the path
         venv_name="${CONDA_DEFAULT_ENV:t}"
 
-    elif [[ -n ${VIRTUAL_ENV} && ${VIRTUAL_ENV} != "base" && -n ${VIRTUAL_ENV_PROMPT} ]]; then
+    elif [[ -n ${VIRTUAL_ENV} && ${VIRTUAL_ENV} != "base" ]]; then
         # for python venv or virtualenv
         # need set VIRTUAL_ENV_DISABLE_PROMPT to avoid python venv auto set prompt
         # `${...:t}` means basename of the path
-        venv_name="${VIRTUAL_ENV_PROMPT}"
+        venv_name="${VIRTUAL_ENV:t}"
     fi
 
     if [[ -z ${venv_name} ]]; then
@@ -687,45 +789,11 @@ typeset -gA jovial_affix_lengths=()
     fi
 }
 
-@jov.prompt-golang-version() {
-    if @jov.rev-parse-find "go.mod"; then
-        if @jov.iscommand go; then
-            local go_prompt_prefix="${JOVIAL_PALETTE[conj.]}using "
-            # go version go1.7.4 linux/amd64
-            local go_version=`go version`
-            if [[ ${go_version} =~ ' go([0-9]+\.[0-9]+\.[0-9]+) ' ]]; then
-                go_version="${match[1]}"
-            else
-                return 1
-            fi
-            local go_prompt="%F{086}Golang ${go_version}"
-        else
-            local go_prompt_prefix="${JOVIAL_PALETTE[normal]}[${JOVIAL_PALETTE[error]}need "
-            local go_prompt="Golang${JOVIAL_PALETTE[normal]}]"
-        fi
-        echo "${go_prompt_prefix}${go_prompt}"
-    fi
-}
-
-# http://php.net/manual/en/reserved.constants.php
-@jov.prompt-php-version() {
-    if @jov.rev-parse-find "composer.json"; then
-        if @jov.iscommand php; then
-            local php_prompt_prefix="${JOVIAL_PALETTE[conj.]}using "
-            local php_prompt="%F{105}php `\php -r 'echo PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION . "." . PHP_RELEASE_VERSION . "\n";'`"
-        else
-            local php_prompt_prefix="${JOVIAL_PALETTE[normal]}[${JOVIAL_PALETTE[error]}need "
-            local php_prompt="php${JOVIAL_PALETTE[normal]}]"
-        fi
-        echo "${php_prompt_prefix}${php_prompt}"
-    fi
-}
-
 @jov.prompt-python-version() {
     local python_prompt_prefix="${JOVIAL_PALETTE[conj.]}using "
 
-    if [[ -n ${VIRTUAL_ENV} ]]; then
-        local python_prompt="%F{123}`$VIRTUAL_ENV/bin/python --version 2>&1`"
+    if [[ -n ${VIRTUAL_ENV} ]] && @jov.rev-parse-find ".venv"; then
+        local python_prompt="%F{123}`$(@jov.rev-parse-find .venv '' true)/.venv/bin/python --version 2>&1`"
         echo "${python_prompt_prefix}${python_prompt}"
         return 0
     fi
@@ -745,9 +813,7 @@ typeset -gA jovial_affix_lengths=()
 
 typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
     @jov.prompt-node-version
-    @jov.prompt-golang-version
     @jov.prompt-python-version
-    @jov.prompt-php-version
 )
 
 @jov.dev-env-detect() {
@@ -897,13 +963,36 @@ typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
 }
 
 
-# use `exec` to parallel run commands and capture stdout into file descriptor
-#   @jov.set-git-info [true|false]
-# first param is whether git is dirty or not (`true` or `false`), 
-# if first param is not set, will try to read by exec
+# Enhanced git info function that uses gitstatus if available, fallback to original method
 @jov.set-git-info() {
     local is_dirty="$1"
+    local has_changed=false
 
+    # Try to use gitstatus first
+    if [[ ${jovial_gitstatus_available} == true ]]; then
+        @jov.gitstatus-prompt-update
+        
+        if [[ -n ${GITSTATUS_PROMPT} ]]; then
+            # Use gitstatus enhanced prompt
+            jovial_parts[git-info]="${JOVIAL_AFFIXES[git-info.prefix]}${GITSTATUS_PROMPT}${JOVIAL_AFFIXES[git-info.suffix]}"
+            jovial_part_lengths[git-info]=$((
+                ${GITSTATUS_PROMPT_LEN}
+                + ${jovial_affix_lengths[git-info]}
+            ))
+            
+            if [[ ${jovial_parts[git-info]} != ${jovial_previous_parts[git-info]} ]]; then
+                has_changed=true
+            fi
+
+            # set typing-pointer due to git_dirty state maybe changed
+            @jov.set-typing-pointer
+
+            @jov.infer-prompt-rerender ${has_changed}
+            return
+        fi
+    fi
+
+    # Fallback to original git info method
     local dirty_fd branch_fd action_fd
 
     if [[ -z ${is_dirty} ]]; then
@@ -945,8 +1034,6 @@ typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
         + ${#git_action}
     ))
 
-    local has_changed=false
-
     if [[ ${jovial_parts[git-info]} != ${jovial_previous_parts[git-info]} ]]; then
         has_changed=true
     fi
@@ -975,7 +1062,21 @@ typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
     jovial_parts[git-info]="${jovial_previous_parts[git-info]}"
     jovial_part_lengths[git-info]="${jovial_previous_lengths[git-info]}"
 
-    @jov.async 'git-info' @jov.judge-git-dirty @jov.set-git-info
+    if [[ ${jovial_gitstatus_available} == true ]]; then
+        # Use gitstatus async update
+        @jov.async 'git-info' @jov.gitstatus-prompt-update @jov.set-git-info-from-gitstatus
+    else
+        # Use original async method
+        @jov.async 'git-info' @jov.judge-git-dirty @jov.set-git-info
+    fi
+}
+
+# Callback for gitstatus async update
+@jov.set-git-info-from-gitstatus() {
+    local result="$1"  # This will be empty since gitstatus-prompt-update doesn't output anything
+    
+    # Call set-git-info without parameters to use gitstatus data
+    @jov.set-git-info
 }
 
 # `EPOCHSECONDS` is setup in zsh/datetime module
@@ -1010,6 +1111,7 @@ add-zsh-hook preexec @jov.exec-timestamp
 
     if (( jovial_prompt_run_count == 1 )); then
         @jov.init-affix
+        @jov.init-gitstatus  # Initialize gitstatus
         
         local -i dev_env_fd
         exec {dev_env_fd}<> <(@jov.dev-env-detect)
@@ -1099,7 +1201,7 @@ add-zsh-hook precmd @jov.prompt-prepare
     local corner_bottom="${sgr_reset}${JOVIAL_PALETTE[normal]}${JOVIAL_SYMBOL[corner.bottom]}"
 
     echo "${corner_top}${(j..)ordered_parts}${prompts[current-time]}"
-    echo "${corner_bottom}${prompts[typing]}${prompts[venv]} ${sgr_reset}"
+    echo "${corner_bottom}${prompts[typing]} ${sgr_reset}"
 }
 
 
