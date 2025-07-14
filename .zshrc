@@ -38,6 +38,7 @@ plug "zap-zsh/sudo"
 plug "zimfw/exa"
 plug "kjhaber/tm.zsh"
 plug "hlissner/zsh-autopair"
+plug "romkatv/gitstatus"
 
 # personal
 plug "daweiyuanzhang/dotfiles"
