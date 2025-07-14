@@ -210,7 +210,7 @@ typeset -gA JOVIAL_AFFIXES=(
     #
     ## !!! NOTE: note that the "empty space" in this regexp at the beginning is not a common "space",
     ## it is the ANSI escape ESC char ("\e") which is cannot wirte as literal in there
-    local unstyle_regex="\[[0-9;]*[a-zA-Z]"
+    local unstyle_regex="\[[0-9;]*[a-zA-Z]"
 
     # inspired by zsh builtin regexp-replace
     # https://github.com/zsh-users/zsh/blob/zsh-5.8/Functions/Misc/regexp-replace
@@ -490,11 +490,11 @@ typeset -gA jovial_affix_lengths=()
         # `${...:t}` means basename of the path
         venv_name="${CONDA_DEFAULT_ENV:t}"
 
-    elif [[ -n ${VIRTUAL_ENV} && ${VIRTUAL_ENV} != "base" ]]; then
+    elif [[ -n ${VIRTUAL_ENV} && ${VIRTUAL_ENV} != "base" && -n ${VIRTUAL_ENV_PROMPT} ]]; then
         # for python venv or virtualenv
         # need set VIRTUAL_ENV_DISABLE_PROMPT to avoid python venv auto set prompt
         # `${...:t}` means basename of the path
-        venv_name="${VIRTUAL_ENV:t}"
+        venv_name="${VIRTUAL_ENV_PROMPT}"
     fi
 
     if [[ -z ${venv_name} ]]; then
