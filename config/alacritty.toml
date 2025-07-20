@@ -57,10 +57,25 @@ style = "Regular"
 x = 0
 y = 4
 
-[[keyboard.bindings]]
-action = "ToggleSimpleFullscreen"
-key = "X"
-mods = "Control"
+[keyboard]
+bindings = [
+    { key = "V", mods = "Control|Shift", action = "Paste" },
+    { key = "C", mods = "Control|Shift", action = "Copy" },
+    { key = "Up", mods = "Shift", action = "ScrollLineUp" },
+    { key = "Down", mods = "Shift", action = "ScrollLineDown" },
+    { key = "PageUp", mods = "None", action = "ScrollPageUp" },
+    { key = "PageDown", mods = "None", action = "ScrollPageDown" },
+    { key = "Insert", mods = "Shift", action = "PasteSelection" },
+    { key = "Key0", mods = "Control", action = "ResetFontSize" },
+    { key = "Equals", mods = "Control", action = "IncreaseFontSize" },
+    { key = "Minus", mods = "Control", action = "DecreaseFontSize" },
+    { key = "X", mods = "Control", action = "ToggleSimpleFullscreen" },
+    { key = "T", mods = "Command", chars = "T"},
+    { key = "W", mods = "Command", chars = "W"},
+    { key = "R", mods = "Command", chars = "R"},
+    { key = "\\", mods = "Command", chars = "\\"},
+    { key = "=", mods = "Command", chars = "="}
+]
 
 [scrolling]
 history = 10000
@@ -71,7 +86,7 @@ save_to_clipboard = true
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
 [terminal.shell]
-args = ["-l", "-c", "/opt/homebrew/bin/tmux new-session -A -s main"]
+args = ["-l", "-c", "if [ -x /opt/homebrew/bin/tmux ]; then /opt/homebrew/bin/tmux new-session -A -s main; else /usr/local/bin/tmux new-session -A -s main; fi"]
 program = "/bin/zsh"
 
 [window]
