@@ -22,11 +22,11 @@ SAVEHIST=500000
 HIST_STAMPS="yyyy-mm-dd"
 
 
-# export STARSHIP_CONFIG="$HOME/.starship.toml"
+export STARSHIP_CONFIG="$HOME/.starship.toml"
 
 # plugins
 plug "wintermi/zsh-brew"
-# plug "wintermi/zsh-starship"
+plug "wintermi/zsh-starship"
 plug "zsh-users/zsh-autosuggestions"
 plug "zsh-users/zsh-syntax-highlighting"
 plug "zsh-users/zsh-completions"
@@ -38,7 +38,7 @@ plug "zap-zsh/sudo"
 plug "zimfw/exa"
 plug "kjhaber/tm.zsh"
 plug "hlissner/zsh-autopair"
-plug "romkatv/gitstatus"
+# plug "romkatv/gitstatus"
 
 # personal
 plug "daweiyuanzhang/dotfiles"
