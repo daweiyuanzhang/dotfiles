@@ -70,11 +70,16 @@ bindings = [
     { key = "Equals", mods = "Control", action = "IncreaseFontSize" },
     { key = "Minus", mods = "Control", action = "DecreaseFontSize" },
     { key = "X", mods = "Control", action = "ToggleSimpleFullscreen" },
-    { key = "T", mods = "Command", chars = "T"},
-    { key = "W", mods = "Command", chars = "W"},
-    { key = "R", mods = "Command", chars = "R"},
-    { key = "\\", mods = "Command", chars = "\\"},
-    { key = "=", mods = "Command", chars = "="}
+    # Command+T 新建tmux窗口
+    { key = "T", mods = "Command", chars = "\u0001t"},
+    # Command+W 关闭tmux面板
+    { key = "W", mods = "Command", chars = "\u0001w"},  
+    # Command+R 重载tmux配置
+    { key = "R", mods = "Command", chars = "\u0001r"},
+    # Command+\ 水平分屏
+    { key = "\\", mods = "Command", chars = "\u0001\\"},
+    # Command+= 垂直分屏
+    { key = "=", mods = "Command", chars = "\u0001="}
 ]
 
 [scrolling]
